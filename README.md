@@ -31,6 +31,21 @@ here we have successfully connected our mongoDB to backend.
 19. command: npm i multer | (https://www.npmjs.com/package/multer)
     we have to use multer to upload file on cloudinary.
 
-20.
+20. setup postman.
+
+21. register user steps:-
+    step-1: get user details from frontend.
+    step-2: validation :- should not be empty.
+    step-3: check if user already exists: username, email.
+    step-4: check for images and avatar.
+    step-5: upload them to cloudinary, avatar
+    step-6: create user object - create entry in db.
+    step-7: remove password and refresh token field from response.
+    step-8: check for user creation.
+    step-9: return response.
+
+22. Logic building: 8:30 to 9:40
+
+23.
 
 5:29 to 6:14
