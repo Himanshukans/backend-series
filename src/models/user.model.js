@@ -52,12 +52,11 @@ const userSchema = new Schema(
 );
 
 // pre hook | we do not use arrow function here because we need to access the "this" keyword which is not available in arrow functions
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
 
   this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
+}); // i removed the "next" parameter from the pre hook function because we do not need to call it explicitly. If we do not call it, mongoose will automatically call it for us after the pre hook function is executed. mongoose has been updated and now it automatically calls the next function after the pre hook function is executed.
 
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);

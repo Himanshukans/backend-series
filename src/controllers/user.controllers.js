@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, fullName, password } = req.body;
-  console.log("email: ", email);
+  // console.log("email: ", email);
 
   // Check if the user already exists
   if (
@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required.");
   }
 
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ email }, { username }],
   });
 
@@ -27,7 +27,16 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const avatarLocalPath = req.files?.avatar[0]?.path; // Get the local path of the uploaded avatar file
-  const coverImageLocalPath = req.files?.coverImage[0]?.path; // Get the local path of the uploaded cover image file
+  // const coverImageLocalPath = req.files?.coverImage[0]?.path; // Get the local path of the uploaded cover image file
+
+  let coverImageLocalPath;
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage.length > 0
+  ) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  } // Get the local path of the uploaded cover image file if it exists
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar image is required.");
