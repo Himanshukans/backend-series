@@ -46,6 +46,16 @@ here we have successfully connected our mongoDB to backend.
 
 22. Logic building: 8:30 to 9:40
 
-23.
+## part-2
+
+23. loginUser made in user.controller.js file. Steps:-
+    step-1: get data from request body.
+    step-2: check username/email.
+    step-3: find user: available or not.
+    step-4: if user available, then check password. if password incorrect then msg them the password is incorrect.
+    step-5: after checking password, send access and refresh token to the user.
+    step-6: send tokens in secure cookies form.
+
+24. auth.middleware.js file created and building logoutUser
 
 5:29 to 6:14
