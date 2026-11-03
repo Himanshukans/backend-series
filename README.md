@@ -56,6 +56,8 @@ here we have successfully connected our mongoDB to backend.
     step-5: after checking password, send access and refresh token to the user.
     step-6: send tokens in secure cookies form.
 
-24. auth.middleware.js file created and building logoutUser
+24. auth.middleware.js file created and built logoutUser
+
+25. refreshAccessToken created using cookies.
 
 5:29 to 6:14

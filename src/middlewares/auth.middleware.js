@@ -1,5 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/ApiError";
+import { ApiError } from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
@@ -7,7 +7,9 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
   try {
     const token =
       req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer", "");
+      req.header("Authorization")?.replace("Bearer", "").trim(); // Get the access token from cookies or Authorization header
+
+    console.log(token);
 
     if (!token) {
       throw new ApiError(401, "Access token is missing. Please log in.");
@@ -24,7 +26,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     }
 
     req.user = user;
-    //   next();  // We do not need to call next() explicitly because we are using asyncHandler which automatically handles the next() call for us. If we do not call it, asyncHandler will automatically call it for us after the async function is executed.
+    next(); // this next is not from mongoose, it is from express, it will call the next middleware in the stack
   } catch (error) {
     throw new ApiError(401, "Invalid access token. Please log in again.");
   }
