@@ -60,4 +60,6 @@ here we have successfully connected our mongoDB to backend.
 
 25. refreshAccessToken created using cookies.
 
+26. created subscriptoin.model.js file
+
 5:29 to 6:14
