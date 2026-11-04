@@ -60,6 +60,8 @@ here we have successfully connected our mongoDB to backend.
 
 25. refreshAccessToken created using cookies.
 
-26. created subscriptoin.model.js file
+26. created subscriptoin.model.js file and some controllers in user.controllers.js file.
+
+27. learning "Aggregation Pipelines" on MongoDB. (https://www.mongodb.com/docs/manual/core/aggregation-pipeline/) and getUserChannelProfile created.
 
 5:29 to 6:14

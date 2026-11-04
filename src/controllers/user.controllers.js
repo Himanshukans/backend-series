@@ -306,6 +306,74 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User cover image updated successfully."));
 });
 
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  const { username } = req.params;
+  if (!username?.trim) {
+    throw new ApiError(400, "Username is required.");
+  }
+
+  // Aggregate pipeline to fetch user profile along with subscriber count and subscription status
+  const channel = await User.aggregate([
+    { $match: { username: username?.toLowerCase() } },
+    {
+      $lookup: {
+        from: "subscriptions", // this name "Subscription" comes from model, but in model al name convert into lowercase and plural form.
+        localField: "_id",
+        foreignField: "channel",
+        as: "subscribers",
+      },
+    },
+
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "subscriber",
+        as: "subscribedTo",
+      },
+    },
+    {
+      $addFields: {
+        subscriberCount: { $size: "$subscribers" }, // Count the number of subscribers for the channel
+        channelsSubscribedToCount: { $size: "$subscribedTo" }, // Count the number of channels the user is subscribed to
+        isSubscribed: {
+          $cond: {
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            then: true,
+            else: false,
+          },
+        }, // Check if the current user is subscribed to the channel
+      },
+    },
+    {
+      $project: {
+        fullName: 1,
+        username: 1,
+        avatar: 1,
+        coverImage: 1,
+        subscriberCount: 1,
+        channelsSubscribedToCount: 1,
+        isSubscribed: 1,
+        email: 1,
+        password: 0,
+      },
+    }, // 0 means exclude the field from the result, while 1 means include the field in the result. Here we are excluding the password field from the result because we do not want to expose it to the client. We are including all other fields that we want to send to the client.
+  ]);
+
+  if (!channel?.length) {
+    throw new ApiError(
+      404,
+      "Channel does not exist with the provided username."
+    );
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, channel[0], "Channel profile fetched successfully.")
+    );
+});
+
 export {
   registerUser,
   loginUser,
@@ -316,4 +384,5 @@ export {
   updateAccountDetails,
   updateUserAvatar,
   updateUserCoverImage,
+  getUserChannelProfile,
 };
