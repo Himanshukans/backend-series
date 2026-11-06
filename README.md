@@ -64,4 +64,8 @@ here we have successfully connected our mongoDB to backend.
 
 27. learning "Aggregation Pipelines" on MongoDB. (https://www.mongodb.com/docs/manual/core/aggregation-pipeline/) and getUserChannelProfile created.
 
+28. getWatchHistory code build in user.controller.js file.
+
+29.
+
 5:29 to 6:14
